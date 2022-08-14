@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    body{
+        width: 100%;
+    background: #0c111b;
+    }
+    #container{
+        display: grid;
+        margin-top: 50px;
+        grid-template-columns: repeat(3,1fr);
+        gap: 30px;
+        margin-left: 48px;
+        color: white;
+        padding: 40px;
+
+    }
+    .box{
+       height: 360px;
+       width:280px;
+        box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
+        scroll-behavior: smooth;
+        
+    }
+    .box:hover{
+        cursor: pointer;
+        transform: scale(1.1);
+
+    }
+</style>
+<body>
+    <div id="container"></div>
+</body>
+</html>
+<script>
+    let container = document.getElementById("container");
+             
+              fetch(`https://api.themoviedb.org/3/trending/movie/week?api_key=9959c2a5c86f9b92b06057e2b34fe10b`).then((res)=>{
+                  return res.json();
+              }).then((res)=>{
+                  console.log(res.results)
+                  append(res.results)
+              })
+
+let append = (data)=>{
+data.map(({title,poster_path,release_date,vote_average})=>{
+    let box = document.createElement("div");
+    box.setAttribute("class","box")
+    let poster = document.createElement("img");
+    poster.src = `https://image.tmdb.org/t/p/original/${poster_path}`
+    poster.style.height="60%"
+    poster.style.width="100%"
+    let name = document.createElement("h4");
+    name.innerText = title;
+    let date = document.createElement("h4")
+    date.innerText = release_date;
+    let rating = document.createElement("h4")
+    rating.innerText = vote_average;
+    box.append(poster,name,date,rating);
+    container.append(box)
+
+  })
+}
+</script>
